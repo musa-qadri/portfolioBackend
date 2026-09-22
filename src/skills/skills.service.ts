@@ -28,12 +28,13 @@ export class SkillsService {
   }
 
   async update(id: string, updateSkillDto: UpdateSkillDto): Promise<Skill> {
-    await this.skillsRepository.update(id, updateSkillDto);
-    return this.findOne(id);
+    const existingSkill = await this.findOne(id);
+    const updatedSkill = this.skillsRepository.merge(existingSkill, updateSkillDto);
+    return this.skillsRepository.save(updatedSkill);
   }
 
   async remove(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.skillsRepository.delete(id);
+    const skill = await this.findOne(id);
+    await this.skillsRepository.remove(skill);
   }
 }

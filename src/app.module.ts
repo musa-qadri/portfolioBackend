@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,6 +18,7 @@ import { ProjectImageModule } from './project-image/project-image.module';
 import { ProjectsModule } from './projects/projects.module';
 import { SkillsModule } from './skills/skills.module';
 import { UserModule } from './users/user.module';
+import { GlobalAuthGuard } from './auth/global-auth.guard';
 
 @Module({
   imports: [
@@ -45,6 +47,12 @@ import { UserModule } from './users/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: GlobalAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

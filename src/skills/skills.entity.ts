@@ -6,7 +6,10 @@ export class Skill {
   id: string;
 
   @Column()
-  name: string;
+  title: string;
+
+  @Column('text', { array: true, default: '{}' })
+  skills: string[];
 
   @Column({ nullable: true })
   category: string;
